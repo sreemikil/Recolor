@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale-1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+</head>
+
+<style>
+
+    .center{
+        margin-top: 8px;
+        width: 100%;
+        height: 60vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* background-color: blue; */
+    }
+
+    /* .center img{
+        z-index: 0;
+        filter: invert(50%) sepia(42%) saturate(2219%) hue-rotate(158deg) brightness(91%) contrast(101%);
+    } */
+
+
+    .wew {
+        position: absolute;
+        width: 200px;
+        height: 142px;
+        -webkit-mask-size:contain;
+        -webkit-mask-image:url(./garm.png);
+        -webkit-mask-position: center;
+        -webkit-mask-repeat:no-repeat;
+        mask-image: url(./garm.png);
+        mask-size: contain;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        background: rgb(0, 0, 0);
+    }
+
+
+    /* .colorInput {
+        pointer-events: none;
+    } */
+
+</style>
+
+<body  onload="autoClick();">
+
+    <input type="color" id="clr" class="colorInput">
+    <input type="file" accept="image/*" onchange="loadFile(event)">
+    <a href="" id="download" class="download">Download</a>
+    <div id="center1" class="center">
+        <div class="wew" id="324"></div>
+    </div>
+
+
+
+
+<!-- Java Script -->
+
+    <script>
+
+
+
+
+        // color change
+        let color = document.querySelector('.colorInput');
+        let over = document.querySelector('.wew');
+
+        color.addEventListener('input', ()=> {
+            over.style.background = color.value;
+        })
+
+
+
+        // To Upload Iamge
+        function loadFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                const image = new Image();
+                image.src = reader.result;
+                image.onload = function() {
+                    over.style.webkitMaskImage = `url(${image.src})`;
+                    over.style.maskImage = `url(${image.src})`;
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+         // Download Image
+
+         function autoClick(){
+        $("#download").click();
+      }
+
+      $(document).ready(function(){
+        var element = $("#324");
+
+        $("#download").on('click', function(){
+
+          html2canvas(element, {
+            onrendered: function(canvas) {
+              var imageData = canvas.toDataURL("image/jpg");
+              var newData = imageData.replace(/^data:image\/jpg/, "data:application/octet-stream");
+              $("#download").attr("download", "image.png").attr("href", newData);
+            }
+          });
+
+        });
+      });
+
+
+
+
+    </script>
+
+<!-- End of Java Script -->
+    
+</body>
+</html>
+
+
+
+
+
+
